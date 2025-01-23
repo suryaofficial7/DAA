@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix Transpose</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    input[type="number"] {
+      width: 50px;
+      padding: 5px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .matrix-input {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .matrix-input input {
+      width: 50px;
+      margin: 5px;
+      text-align: center;
+    }
+    .buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Matrix Transpose Calculator</h2>
+
+    <!-- Input for matrix dimensions -->
+    <div class="inputs">
+      <label for="rows">Rows: </label>
+      <input type="number" id="rows" min="1" required>
+      <label for="cols">Columns: </label>
+      <input type="number" id="cols" min="1" required>
+      <div class="buttons">
+        <button onclick="createMatrixInputFields()">Submit</button>
+      </div>
+    </div>
+
+    <!-- Matrix input fields (hidden initially) -->
+    <div id="matrix-input-container" class="matrix-input"></div>
+
+    <!-- Compute transpose button (hidden initially) -->
+    <div class="buttons">
+      <button id="compute-btn" style="display:none;" onclick="computeTranspose()">Compute Transpose</button>
+    </div>
+
+    <!-- Result output -->
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    function createMatrixInputFields() {
+      // Get the number of rows and columns
+      const rows = document.getElementById('rows').value;
+      const cols = document.getElementById('cols').value;
+
+      if (rows <= 0 || cols <= 0) {
+        alert('Please enter valid rows and columns');
+        return;
+      }
+
+      // Clear any previous matrix input fields
+      const matrixInputContainer = document.getElementById('matrix-input-container');
+      matrixInputContainer.innerHTML = '';
+      document.getElementById('result').innerHTML = '';
+
+      // Create input fields for the matrix
+      for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.id = `matrix-${i}-${j}`;
+          matrixInputContainer.appendChild(input);
+        }
+        matrixInputContainer.appendChild(document.createElement('br'));
+      }
+
+      // Show the compute transpose button
+      document.getElementById('compute-btn').style.display = 'inline-block';
+    }
+
+    function computeTranspose() {
+      // Get the number of rows and columns
+      const rows = document.getElementById('rows').value;
+      const cols = document.getElementById('cols').value;
+
+      // Create an empty matrix to store the input values
+      const matrix = [];
+
+      // Fill the matrix with values from input fields
+      for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < cols; j++) {
+          const value = parseInt(document.getElementById(`matrix-${i}-${j}`).value);
+          row.push(value);
+        }
+        matrix.push(row);
+      }
+
+      // Calculate the transpose of the matrix
+      const transpose = [];
+      for (let j = 0; j < cols; j++) {
+        const newRow = [];
+        for (let i = 0; i < rows; i++) {
+          newRow.push(matrix[i][j]);
+        }
+        transpose.push(newRow);
+      }
+
+      // Display the result
+      displayResult(transpose);
+    }
+
+    function displayResult(transpose) {
+      const resultContainer = document.getElementById('result');
+      resultContainer.innerHTML = '<h3>Transpose Matrix:</h3>';
+      const table = document.createElement('table');
+      for (let i = 0; i < transpose.length; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < transpose[i].length; j++) {
+          const cell = document.createElement('td');
+          cell.textContent = transpose[i][j];
+          row.appendChild(cell);
+        }
+        table.appendChild(row);
+      }
+      resultContainer.appendChild(table);
+    }
+  </script>
+
+</body>
+</html>
